@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 启动注解 -->	
+	<context:annotation-config />
+	
+	<!-- dataSource配置 -->
+	<!-- 1、加载db.properties文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<!-- 2、配置dataSource -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	
+	
+	<!-- SqlSessionFactoryBean配置 -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="typeAliasesPackage" value="com.xuy849.pojo"/>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mapperLocations" value="classpath*:mapper/*Mapper.xml"/>
+	</bean>
+	
+	<!-- mapper配置
+		采用包扫描配置：要求：mapper.xml与mapper.java在同一目录下，且名称相同
+	 -->
+	 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	 	<property name="basePackage" value="**.mapper"/>
+	 </bean>
+	
+	<!-- service配置
+		采用包扫描
+	 -->	 
+	 <context:component-scan base-package="**.service.imp"/>
+
+</beans>

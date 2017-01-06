@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">电影编号</label>
+    <div class="col-sm-10">
+      <label class="col-sm-2 control-label" id="film_id">电影编号</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">电影标题</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="title">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">电影描述</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="description">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">电影语言</label>
+    <div class="col-sm-10">
+     <select id="sel_language" class="sel_language">
+						<option value="-1">请选择电影语言</option>
+	</select>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button class="btn btn-default" id="ok">确定</button>
+      <button class="btn btn-default" id="cancle">取消</button>
+    </div>
+  </div>
+  
+  <script>
+  	var page;
+  	var film_id;
+  	var title;
+  	var description;
+  	var language;
+  	var maxSize;
+  
+  	$('document').ready(function(){
+	  	
+  		//初始化
+  		init();
+  		
+  		
+  	});
+  	
+  	function init(){
+  		var url = location.search; 
+  		
+  		page = GetQueryString("page");		
+  		film_id = GetQueryString("film_id");
+  		title=GetQueryString("title");
+  		description=GetQueryString("description");
+  		language=GetQueryString("language");
+  		maxSize=GetQueryString("maxSize");
+  		
+  		//初始化界面
+  		$("#title").val(title);
+  		$('#description').val(description);		
+  		$('#film_id').text(film_id);
+  		
+  		//初始化语言下拉列表
+  		initSelLanguage();
+  		
+  		//初始化提交修改按钮
+  		$('#ok').click(submit);
+  		
+  		//初始化取消按钮
+  		$('#cancle').click(cancle);
+  		
+  	};
+  	
+  	function cancle(){
+  		//跳转
+  		self.location=("query.html");
+  	}
+  	
+  	function submit(){
+  		
+  		var data = {
+  				filmId:film_id,
+  				title:$("#title").val(),
+  				description:$('#description').val(),
+  				language:$('.sel_language').val()
+  		};
+  		
+  		//
+  		$.ajax({
+  			url:"film/updateFilm",
+  			type:"GET",
+			dataType: "json",
+			data: data,
+			error:function(e){
+				console.log("ajax连接film/updateFilm失败");
+           	},
+           	success: function (data){
+           		if(data=="YES"){
+           			alert("更新成功");
+           			
+           			//跳转回之前页面
+           			self.location=("query.html");
+           		}
+           		else{
+           			alert("更新失败");
+           		}
+           	}
+  		});
+  	}
+  	
+  	//初始化下拉列表
+	function initSelLanguage(){
+		$.ajax({
+			url:"film/queryLanguage",
+			type:"GET",
+			dataType: "json",
+			error:function(e){
+				console.log("ajax连接film/queryLanguage失败");
+           	},
+           	success: function (data){
+           		//
+           		for(var item of data){
+           			var option;
+           			
+        			if(item.name==language)
+        				option = "<option value="+"\""+item.language_id+"\""+" selected = "+"\""+"selected"+"\""+">"+item.name+"</option>";
+        			else
+           				option = "<option value="+"\""+item.language_id+"\""+">"+item.name+"</option>";
+           			
+           				//console.log(option);
+           			$('.sel_language').append(option);
+           		}
+           	}
+		});
+	};
+  	
+  	function GetQueryString(name)
+  	{
+  	     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  	     var r = location.search.substr(1).match(reg);
+  	     if(r!=null)return  unescape(r[2]); return null;
+  	}
+  	 
+  	// 调用方法
+
+  </script>
+  
+</body>
+</html>

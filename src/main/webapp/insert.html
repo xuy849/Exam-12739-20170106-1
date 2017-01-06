@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">电影标题</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="title">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">电影描述</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="description">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">电影语言</label>
+    <div class="col-sm-10">
+     <select id="sel_language" class="sel_language">
+						<option value="-1">请选择电影语言</option>
+	</select>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button class="btn btn-default" id="ok">插入</button>
+      <button class="btn btn-default" id="cancle">取消</button>
+    </div>
+  </div>
+  
+  <script>
+  	
+  	$('document').ready(function(){
+	  	
+		//初始化
+		init();
+		
+		
+	});
+  	
+  	function init(){
+  		
+  		//初始化下拉列表
+  		initSelLanguage();
+  		
+  		//初始化插入按钮点击事件
+  		$('#ok').click(submit);
+  		
+  		//初始化取消按钮点击事件
+  		$('#cancle').click(cancle);
+  		
+  	};
+  	
+  	function cancle(){
+  	//界面跳转
+   		self.location=("query.html");
+  	}
+  	
+  	function submit(){
+  		//
+  		if($('.sel_language').val()==-1){
+  			alert("请先选择语言");
+  			return;
+  		}
+  		
+  		//插入
+  		var data={
+  				title:$("#title").val(),
+  				description:$('#description').val(),
+  				language_id:$('.sel_language').val()
+  		};
+  			
+  		//
+  		$.ajax({
+  			url:"film/insertIntoFilm",
+  			type:"GET",
+			dataType: "json",
+			data: data,
+			error:function(e){
+				console.log("ajax连接film/updateFilm失败");
+           	},
+           	success:function(data){
+           		if(data=="NO")
+           		{
+           			alert("插入失败");
+           			return;
+           		}
+           		
+           		//提示插入成功
+           		alert("插入成功");
+           		
+           		//界面跳转
+           		self.location=("query.html");
+           	}
+        });
+  	};
+  	
+  //初始化下拉列表
+	function initSelLanguage(){
+		$.ajax({
+			url:"film/queryLanguage",
+			type:"GET",
+			dataType: "json",
+			error:function(e){
+				console.log("ajax连接film/queryLanguage失败");
+           	},
+           	success: function (data){
+           		//
+           		for(var item of data){
+           			var option;
+
+           			option = "<option value="+"\""+item.language_id+"\""+">"+item.name+"</option>";
+           			
+           				//console.log(option);
+           			$('.sel_language').append(option);
+           		}
+           	}
+		});
+	};
+  
+  </script>
+</body>
+</html>

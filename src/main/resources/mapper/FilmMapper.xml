@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuy849.mapper.FilmMapper">
+	
+	<!-- 技术实现往 film表中插入一条数据 表中插入一条数据 表中插入一条数据 -->
+	<insert id="insertIntoFilm" parameterType="film">
+		INSERT into `film`(title,description,language_id)
+		VALUE(#{title},#{description},#{language_id})
+	</insert>
+	
+	<!-- 模糊查询Film
+		根据film_id,title,description,language_id
+	 -->
+	 <select id="query" parameterType="filmCustom" resultType="film">
+	 	SELECT film_id,title,description,language_id
+	 	FROM `film`
+	 	<where>
+	 		<!-- if标签中是判断输入参数的 -->
+	 		<if test="film_id!=null">
+	 			AND film_id = #{film_id}
+	 		</if>
+	 		
+	 			AND title LIKE CONCAT('%', CONCAT(#{title}, '%'))
+
+	 			AND description LIKE CONCAT('%', CONCAT(#{description}, '%'))
+	 		
+	 		<if test="language_id!=null">
+	 			AND language_id= #{language_id}
+	 		</if>
+	 		
+	 	</where>
+		
+	 </select>
+	 
+	 <!-- 模糊查询Film
+		根据film_id,title,description,language_id
+		分页
+	 -->
+	 <select id="queryPage" parameterType="page" resultType="film">
+	 	SELECT film_id,title,description,name
+	 	FROM `film`,`language`
+	 	<where>
+	 		<!-- if标签中是判断输入参数的 -->
+	 		<if test="entity.film_id!=null">
+	 			AND film_id = #{entity.film_id}
+	 		</if>
+	 		
+	 			AND title LIKE CONCAT('%', CONCAT(#{entity.title}, '%'))
+
+	 			AND description LIKE CONCAT('%', CONCAT(#{entity.description}, '%'))
+	 		
+	 		<if test="entity.language_id!=null">
+	 			AND `film`.language_id= #{entity.language_id}
+	 		</if>
+	 			AND `film`.language_id = `language`.language_id
+	 	</where>
+			order by film_id
+			
+			LIMIT #{offset},#{maxSize}
+	 </select>
+	 
+	 <!-- 模糊查询Film
+		根据film_id,title,description,language_id
+		得到总数
+	 -->
+	 <select id="selectCount" parameterType="filmCustom" resultType="int">
+	 	SELECT count(1)
+	 	FROM `film`
+	 	<where>
+	 		<!-- if标签中是判断输入参数的 -->
+	 		<if test="film_id!=null">
+	 			AND film_id = #{film_id}
+	 		</if>
+	 		
+	 			AND title LIKE CONCAT('%', CONCAT(#{title}, '%'))
+
+	 			AND description LIKE CONCAT('%', CONCAT(#{description}, '%'))
+	 		
+	 		<if test="language_id!=null">
+	 			AND language_id= #{language_id}
+	 		</if>	 		
+	 	</where>
+	</select>
+	
+	<!-- 根据film_id删除film -->
+	<delete id="deleteById" parameterType="int">	
+		DELETE FROM `film` WHERE film_id=#{film_id};
+	</delete>
+	
+	<!-- 更新film -->
+	<update id="updateFilmById" parameterType="film">
+		UPDATE `film`
+		SET title=#{title},description=#{description},language_id=#{language_id}
+		WHERE film_id=#{film_id}
+	</update>
+	
+</mapper>

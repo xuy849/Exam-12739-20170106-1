@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<link rel="stylesheet"
+	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="row">
+				<div class="form-horizontal" role="form">
+					<div class="row">
+						<div class="form-group col-sm-3">
+							<label for="lab_filmId" class="col-sm-4 control-label">电影编号</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inp_filmId"
+									placeholder="请输入电影编号">
+							</div>
+						</div>
+
+						<div class="form-group col-sm-3">
+							<label for="lab_title" class="col-sm-4 control-label">电影名称</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inp_title"
+									placeholder="请输入电影名称">
+							</div>
+						</div>
+
+						<div class="form-group col-sm-3">
+							<label for="lab_description" class="col-sm-4 control-label">电影描述</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inp_description"
+									placeholder="请输入电影描述">
+							</div>
+						</div>
+
+
+						<div class="form-group col-sm-3">
+							<label for="lab_language_id" class="col-sm-4 control-label">电影语言</label>
+							<div class="col-sm-8">
+								<select id="sel_language" class="sel_language">
+						<option value="-1">请选择电影语言</option>
+					</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="text-center col-sm-10">
+							<button id="query" class="btn btn-info">查询</button>
+						</div>
+						<div class="text-center col-sm-1">
+							<button id="insert" class="btn btn-info">添加记录</button>
+						</div>
+					</div>
+			</div>
+			<div class="row"></div>
+		</div>
+		<div class="row">
+			<table class="table" id="mytable">
+				<thead>
+					<tr>
+						<th class="col-sm-1">电影编号</th>
+						<th class="col-sm-2">电影名称</th>
+						<th class="col-sm-5">电影描述</th>
+						<th class="col-sm-1">电影语言</th>
+						<th class="col-sm-2">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+		<div class="row">
+
+			<div  class="col-sm-8" >
+				<ul id="pagination" class="pagination">
+					<li><a href="#">&laquo;</a></li>
+					<li><a href="#">1</a></li>
+					<li><a href="#">&raquo;</a></li>
+				</ul>
+			</div>
+
+			<div class="col-sm-2">
+				<div class="row">
+					<label>每页显示</label> 
+					<select id="sel_maxSize">
+						<option value="10" selected = "selected">10</option>
+						<option value="15">20</option>
+						<option value="20">50</option>
+					</select> <label>个</label>
+				</div>
+			</div>
+
+			<div class="col-sm-2">
+				<div class="input-group">
+					<input id="inp_go" type="number" class="form-control" min="1"> <span
+						class="input-group-btn">
+						<button id="btn_go" class="btn btn-default" type="button">跳转</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 更新model -->
+	<!-- 模态框（Modal） -->
+<div class="modal fade" id="updateModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					更新操作
+				</h4>
+			</div>
+			<div class="modal-body">
+			
+				<div class="container">
+				
+				<!-- film_id -->
+				<div class="form-group col-sm-12" >
+							<label for="lab_filmId" class="col-sm-1 control-label">电影编号</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="inp_filmId"
+									placeholder="请输入电影编号">
+							</div>
+				</div>
+				
+				<!-- title -->
+				<div class="form-group col-sm-12">
+							<label for="lab_title" class="col-sm-1 control-label">电影名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="inp_title"
+									placeholder="请输入电影名称">
+							</div>
+				</div>
+				
+				<!-- 电影描述 -->
+				<div class="form-group col-sm-12">
+							<label for="lab_description" class="col-sm-1 control-label">电影描述</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="inp_description"
+									placeholder="请输入电影描述">
+							</div>
+				</div>
+				
+				<!-- 电影语言 -->
+				<div class="form-group col-sm-12">
+							<label for="lab_language_id" class="col-sm-1 control-label">电影语言</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="inp_language_id"
+									placeholder="请输入电影语言">
+							</div>
+						</div>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消
+				</button>
+				<button type="button" class="btn btn-primary">
+					提交更新
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+</div>
+</div>
+
+	<script id="rowTemplate" type="application/html">
+				<tr>
+						<td>qq</td>
+						<td>aa</td>
+						<td>aa</td>
+						<td>aa</td>
+						<td><a id="update" href="#" >修改</a>
+							<a id="delete" href="#">&emsp;删除</a></td>
+					</tr>
+	</script>
+
+	<script>
+	var page=1;
+	var maxSize=10;
+	var total=0;
+	var pageCounts=1;
+	
+		//
+		$('document').ready(function(){
+			
+			//初始化语言下拉列表
+			initSelLanguage();	
+			
+			//查询
+			query(
+					{
+						film_id:$('#inp_filmId').val(),
+						title:$('#inp_title').val(),
+						description:$('#inp_description').val(),
+						language_id:$('.sel_language').val(),
+						page:page,
+						maxSize:maxSize
+					}
+			);
+			
+			//
+			//设置查询按钮点击事件
+			$('#query').click(function(){
+				console.log("ajax连接film/query失败");
+				//设置第一页
+				page=1;
+				
+				query(
+					{
+						film_id:$('#inp_filmId').val(),
+						title:$('#inp_title').val(),
+						description:$('#inp_description').val(),
+						language_id:$('.sel_language').val(),
+						page:page,
+						maxSize:maxSize
+					}
+				);			
+			});	
+			
+			//设置插入按钮点击事件
+			$('#insert').click(function(){
+				//跳转到插入界面
+				self.location=("insert.html");
+			});
+			
+			//设置每页显示的下拉列表选择事件
+			$('#sel_maxSize').change(function(){
+				page=1;
+				maxSize = Number($('#sel_maxSize').val());
+				query(
+						{
+							film_id:$('#inp_filmId').val(),
+							title:$('#inp_title').val(),
+							description:$('#inp_description').val(),
+							language_id:$('.sel_language').val(),
+							page:page,
+							maxSize:maxSize
+						}	);
+			});
+			
+			//设置跳转
+			$('#btn_go').click(function(){
+				if($('#inp_go').val()>pageCounts)
+				{
+					alert("跳转页数不能大于"+pageCounts);
+					return;
+				}
+				
+				if($('#inp_go').val()<1)
+				{
+					alert("查询页数不能小于1");
+					return;
+				}
+				
+				page = $('#inp_go').val();
+				query(
+						{
+							film_id:$('#inp_filmId').val(),
+							title:$('#inp_title').val(),
+							description:$('#inp_description').val(),
+							language_id:$('.sel_language').val(),
+							page:page,
+							maxSize:maxSize
+						}	);
+			
+				//清空
+				//$('#inp_go').val()="";
+			});
+					
+			
+			
+		});
+		
+		function update(){			
+			//获得film_id
+			var film_id  = $(this).parent().parent().children('td').eq(0).text();
+			
+			var title = $(this).parent().parent().children('td').eq(1).text();
+			
+			var description = $(this).parent().parent().children('td').eq(2).text();
+			
+			var language = $(this).parent().parent().children('td').eq(3).text();
+			
+			//跳转到更新窗口
+			self.location = ("edit.html?"+
+				"page="+page+
+				"&&film_id="+film_id+
+				"&&title="+title+
+				"&&description="+description+
+				"&&language="+language+
+				"&&maxSize="+maxSize
+			);  
+			
+		}
+		
+		function mydelete(){
+			//获得film_id
+			var str  = $(this).parent().parent().children('td').eq(0).text();
+			
+			var dataa={
+					filmId:str
+			};
+			
+			//删除id为str的film
+			$.ajax({
+				url:"film/deleteFilmById",
+				type:"GET",
+				dataType: "json",
+				data:dataa,
+				error:function(e){
+					console.log("ajax连接film/deleteFilmById失败");
+					alert("删除失败");
+               	},
+               	success: function (data){
+               		//alert("删除");
+               		
+               		if(data=="NO")
+               		{
+               			alert("删除失败");
+               				return;
+               		}
+               		
+               		query(
+        					{
+        						film_id:$('#inp_filmId').val(),
+        						title:$('#inp_title').val(),
+        						description:$('#inp_description').val(),
+        						language_id:$('.sel_language').val(),
+        						page:page,
+        						maxSize:maxSize
+        					}
+        			);
+               	}
+			});
+			
+		}
+		
+		//设置分页按钮点击事件
+		function setPageClick(pageText){
+ 		
+			//实现页面跳转
+			if(pageText>=1 && pageText<=pageCounts){
+				//
+				page=pageText;
+				//
+				query(
+						{
+							film_id:$('#inp_filmId').val(),
+							title:$('#inp_title').val(),
+							description:$('#inp_description').val(),
+							language_id:$('.sel_language').val(),
+							page:page,
+							maxSize:maxSize
+						}	
+					);	
+			}
+			else{
+				//第一页
+				if(pageText==0){
+					if(page!=1){
+						page=1;
+						query(
+								{
+									film_id:$('#inp_filmId').val(),
+									title:$('#inp_title').val(),
+									description:$('#inp_description').val(),
+									language_id:$('.sel_language').val(),
+									page:page,
+									maxSize:maxSize
+								}	
+							);	
+					}
+				}
+				
+				//最后一页
+				if(pageText==(pageCounts+1)){
+					if(page!=pageCounts){
+						page=pageCounts;
+						query(
+								{
+									film_id:$('#inp_filmId').val(),
+									title:$('#inp_title').val(),
+									description:$('#inp_description').val(),
+									language_id:$('.sel_language').val(),
+									page:page,
+									maxSize:maxSize
+								}	
+							);	
+					}
+				}
+			}
+		}
+		
+		function query(Page){
+			if(Page.language_id==-1)
+				Page.language_id="";
+			
+			//查询
+			$.ajax({
+				url:"film/query",
+				type:"GET",
+				dataType: "json",
+				data: Page,
+				error:function(e){
+					console.log("ajax连接film/query失败");
+               	},
+               	success: function (data){
+               		console.log("ajax连接film/query成功");
+					
+               		//更新total
+               		total = data.total;
+               		
+               		//更新pageCount
+               		pageCounts = Math.ceil(data.total/maxSize);
+               		
+               		//修改分页样式
+               		setPageView();
+               		
+               		 //清空mytable中的所有列
+               		$('#mytable tbody').empty();
+               		
+               		 
+               		
+               		//遍历并添加列到mytable
+               		for(var item of data.rows){
+               		 	var $template = $($('#rowTemplate').html()).clone();
+               		 	
+               		 	$template.children('td').eq(0).text(item.film_id);
+	                    $template.children('td').eq(1).text(item.title);
+	                    $template.children('td').eq(2).text(item.description);
+	                    $template.children('td').eq(3).text(item.name);
+	                    $('#mytable').append($template);
+	                    
+	                    //设置更新按钮点击事件
+	                    $template.children('td').eq(4).children('#update').click(update);
+               		
+               			//设置删除按钮点击事件
+	                    $template.children('td').eq(4).children('#delete').click(mydelete);
+               		} 
+               	}
+			});
+			
+		};
+		
+		//修改分页
+		function setPageView(){
+			//移除所有页码
+            $('#pagination li').remove();
+			
+          	//动态添加li
+        	var li1 = "<li>"+"<a href="+"\""+"#"+"\""+">"+"&laquo;"+"</a></li>";
+        	$('#pagination').append(li1);
+        	
+        	for(var i=1;i<=pageCounts;i++){
+        		var li;
+        		//如果为当前页
+        		if(i==page){
+        			li = "<li class="+"\""+"active"+"\""+">"+"<a href="+"\""+"#"+"\""+">"+i+"</a></li>";
+        		}
+        		else
+        			li = "<li>"+"<a href="+"\""+"#"+"\""+">"+i+"</a></li>";
+        		
+        		$('#pagination').append(li);
+			}
+        	var li2 = "<li>"+"<a href="+"\""+"#"+"\""+">"+"&raquo;"+"</a></li>";
+        	$('#pagination').append(li2);     	
+		
+        	
+        	//设置分页按钮点击事件
+      		 //设置分页按钮点击事件
+			 $('#pagination li').click(function(){
+				//alert("sa");
+				setPageClick($(this).index());
+				
+			});
+		}
+		
+		function initSelLanguage(){
+			$.ajax({
+				url:"film/queryLanguage",
+				type:"GET",
+				dataType: "json",
+				error:function(e){
+					console.log("ajax连接film/queryLanguage失败");
+               	},
+               	success: function (data){
+               		//
+               		for(var item of data){
+               			var option = "<option value="+"\""+item.language_id+"\""+">"+item.name+"</option>";
+               			//console.log(option);
+               			$('.sel_language').append(option);
+               		}
+               	}
+			});
+		};
+		
+	</script>
+</body>
+</html>

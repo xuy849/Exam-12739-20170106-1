@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+
+			<label for="firstname" class="col-sm-2 control-label">请输入名字</label>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<input type="text" class="form-control" id="firstname"
+					placeholder="请输入名字">
+			</div>
+			<div class="col-sm-2">
+				<button id="submit" class="btn btn-default">登录</button>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+	
+	$('document').ready(function (){
+		
+		//设置登陆按钮点击事件
+		$('#submit').click(function(){
+			query({
+				firstName:$('#firstname').val()
+			});
+			
+		});
+		
+		}
+	);
+	
+	function query(name){
+		
+		if(name.firstName==null)
+		{
+			alert("名字不能为空！");
+			return;
+		}	
+				
+		//
+		$.ajax({
+			url:"custom/login",
+			type:"POST",
+			dataType:"json",
+			data:name,
+			error:function(e){
+				console.log("ajax连接custom/login失败");
+           	},
+           	success: function (data){
+           		
+           		//如果返回YES
+           		if(data=="YES"){
+           			//跳转到列表显示页面
+           		 self.location='query.html';
+           		}
+           		
+           		//如果返回NO
+           		if(data=="NO"){
+           			alert("登陆失败！");
+        			return;
+           		}
+           	}
+		});
+	};
+	
+	</script>
+</body>
+</html>
